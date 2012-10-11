@@ -32,9 +32,17 @@
 (global-set-key [\C-home] 'beginning-of-buffer)
 (global-set-key [\C-end] 'end-of-buffer)
 
+;; (global-set-key "\C-w" 'backward-kill-word)
+(global-set-key "\C-x\C-k" 'kill-region)
+(global-set-key "\C-c\C-k" 'kill-region) 
+(global-set-key "\C-h" 'perltidy-dwim)
 ;; Remap shift+up/down to scroll one line at a time
 ;;(global-set-key [\S-up] 'scroll-down-1)
 ;;(global-set-key [\S-down] 'scroll-up-1)
+
+(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 
 (define-key global-map '[(alt right)] 'my-next-buffer)
 (define-key global-map '[(alt left)] 'my-previous-buffer)
@@ -75,11 +83,10 @@
 
 (setq inhibit-startup-message t)
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Font/Display Stuff
-(global-font-lock-mode t)
+;; (global-font-lock-mode t)
 (transient-mark-mode t)
 (global-font-lock-mode 1)
 (setq font-lock-maximum-decoration t)
@@ -92,6 +99,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Programming stuff
 
+;; turn on minibuffer history saving across sessions
+(require 'savehist-20+)
+(savehist-mode 1)
+
 (defun my-c-mode-hook ()
   (setq c-basic-offset 4)
   (setq tab-width 4
@@ -102,6 +113,8 @@
 
 (autoload 'php-mode "php-mode" "PHP editing mode" t)
 
+(autoload 'perl-lint "perl-lint-mode" nil t)
+(autoload 'perl-lint-mode "perl-lint-mode" nil t)
 
 (defun drupal-mode ()
   (interactive)
@@ -111,7 +124,6 @@
   (setq fill-column 78)
   (c-set-offset 'case-label 2)
   (c-set-offset 'arglist-close 0))
-
 
 (setq auto-mode-alist
       (append '(("\\.C$"    . c++-mode)
@@ -133,10 +145,30 @@
         ("\\.js$"    . java-mode) 
         ("\\.pl$"    . perl-mode)
         ("\\.pm$"    . perl-mode)
+        ("\\.PM$"    . perl-mode)
+        ("\\.pmu$"    . perl-mode)
         ("\\.java$"  . java-mode)
         ("\\.txt$"   . text-mode))
           auto-mode-alist))
+;;       cperl-indent-level 4
+;; use cperl mode instead of perl 
+(defalias 'perl-mode 'cperl-mode)
+(setq cperl-invalid-face nil
+      cperl-indent-level 4 
+      cperl-indent-parens-as-block t
+      cperl-tab-always-indent t
+      cperl-close-paren-offset -4)
 
+(custom-set-variables
+  ;; custom-set-variables was added by Custom -- don't edit or cut/paste it!
+  ;; Your init file should contain only one such instance.
+ '(display-time-mode t nil (time))
+ '(hl-line-face (quote highlight))
+ '(save-place t nil (saveplace))
+ '(show-paren-mode t nil (paren))
+ '(truncate-lines t))
+
+;; turn off spaces
 
 ;; =====================================================================
 ;; MODE LINE
@@ -156,29 +188,7 @@
 ;; custom variables set within emacs
 ;; =====================================================================
 
-(custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- '(auto-compression-mode t nil (jka-compr))
- ;;'(cua-mode t nil (cua-base))
- '(display-time-mode t nil (time))
- ;;'(global-hl-line-mode t nil (hl-line))
- '(hl-line-face (quote highlight))
- '(save-place t nil (saveplace))
- '(show-paren-mode t nil (paren)))
-;; '(tool-bar-mode nil nil (tool-bar)))
-;;(custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If here is more than one, they won't work right.
- ;;'(highlight ((((class color) (min-colors 88) (background light)) (:background "#eeeeee")))))
-
-
-;; start emacs maximized
-;;(w32-send-sys-command 61488)
+ '(global-visual-line-mode nil)
 
 ;; ==========================================================================================
 ;; functions
@@ -242,3 +252,44 @@
 (require 'recentf)
 (recentf-mode 1)
 (require 'csv-mode)
+(custom-set-faces
+  ;; custom-set-faces was added by Custom -- don't edit or cut/paste it!
+  ;; Your init file should contain only one such instance.
+ )
+
+
+(require 'perltidy)
+
+(setq tidyall-cmd "/usr/bin/tidyall")
+
+(defun tidyall-buffer ()
+  "Run tidyall on the current file."
+  (interactive)
+  (let ((file (buffer-file-name)))
+    (cond (file
+           (if (buffer-modified-p)
+               (save-buffer))
+           (let* ((cmd (concat tidyall-cmd " --refresh-cache --output-suffix .tdy -m editor " file))
+                  (tidyall-buffer (get-buffer-create "*tidyall-output*"))
+                  (result (shell-command cmd tidyall-buffer))
+                  (tidied-file (concat file ".tdy"))
+                  (output (with-current-buffer tidyall-buffer (buffer-string)))
+                  (window-positions (mapcar (lambda (w) (window-start w)) (window-list)))
+                  (orig-point (point)))
+             (when (string-match "[\t\n ]*$" output)
+               (replace-match "" nil nil output))
+             (cond ((zerop result)
+                    (cond ((string-match "\\[tidied\\]" output)
+                           (cond ((file-exists-p tidied-file)
+                                  (erase-buffer)
+                                  (insert-file-contents tidied-file)
+                                  (delete-file tidied-file)
+                                  (mapcar (lambda (w) (set-window-start w (pop window-positions))) (window-list))
+                                  (goto-char orig-point)
+                                  (save-buffer))
+                                 (t
+                                  (message (concat "Could not find '" tidied-file "'!")))))))
+                   (t
+                    (message nil)
+                    (split-window-vertically)
+                    (set-window-buffer (next-window) tidyall-buffer))))))))
