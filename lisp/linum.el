@@ -108,7 +108,7 @@ Linum mode is a buffer-local minor mode."
     (linum-delete-overlays)))
 
 ;;;###autoload
-(define-globalized-minor-mode global-linum-mode linum-mode linum-on)
+(easy-mmode-define-global-mode global-linum-mode linum-mode linum-on)
 
 (defun linum-on ()
   (unless (minibufferp)
