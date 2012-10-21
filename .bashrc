@@ -13,7 +13,7 @@ alias p='./push.sh'
 
 #. $HOME/.ssh/ssh-login
 
-function gc() { git commit -a -m '"$1"' ;}
+function gc() { git commit -a -m $1 ;}
 
 
 alias emacs='emacs -nw'
