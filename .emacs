@@ -32,10 +32,11 @@
 (global-set-key [\C-home] 'beginning-of-buffer)
 (global-set-key [\C-end] 'end-of-buffer)
 
-;; (global-set-key "\C-w" 'backward-kill-word)
 (global-set-key "\C-x\C-k" 'kill-region)
 (global-set-key "\C-c\C-k" 'kill-region) 
 (global-set-key "\C-h" 'perltidy-dwim)
+(global-set-key "\C-l" 'global-linum-mode)
+
 ;; Remap shift+up/down to scroll one line at a time
 ;;(global-set-key [\S-up] 'scroll-down-1)
 ;;(global-set-key [\S-down] 'scroll-up-1)
