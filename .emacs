@@ -258,10 +258,10 @@
 
 
 (require 'perltidy)
-
+;;(require 'linum) 
 ;; show line numbers
 (setq linum-format "%d| ")
-(global-linum-mode 1)
+;;(global-linum-mode 1)
 
 (setq tidyall-cmd "/usr/bin/tidyall")
 

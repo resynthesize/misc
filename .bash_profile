@@ -4,4 +4,4 @@ if [ -f ~/.bashrc ]; then
         . ~/.bashrc
 fi
 
-PATH=~/bin:$PATH
+PATH=/opt/local/bin:~/bin:$PATH
