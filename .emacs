@@ -37,10 +37,6 @@
 (global-set-key "\C-h" 'perltidy-dwim)
 (global-set-key "\C-l" 'global-linum-mode)
 
-;; Remap shift+up/down to scroll one line at a time
-;;(global-set-key [\S-up] 'scroll-down-1)
-;;(global-set-key [\S-down] 'scroll-up-1)
-
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
@@ -98,7 +94,7 @@
 ;;(hscroll-global-mode t)
 
 (require 'color-theme)
-;;(color-theme-tty-dark)
+(color-theme-tty-dark)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Programming stuff
@@ -116,7 +112,6 @@
 (add-hook 'c-mode-common-hook 'my-c-mode-hook)
 
 (autoload 'php-mode "php-mode" "PHP editing mode" t)
-
 (autoload 'perl-lint "perl-lint-mode" nil t)
 (autoload 'perl-lint-mode "perl-lint-mode" nil t)
 
