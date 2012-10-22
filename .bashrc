@@ -9,12 +9,13 @@ alias config='cd /opt/IBM/ITM/config'
 alias ewas='cd /opt/IBM/ITM/li6263/iw/profiles/ITMProfile/logs/ITMServer'
 alias z0='cd /opt/IBM/ITM/li6263/z0/bin'
 alias zk='cd /opt/IBM/ITM/li6263/zk/bin'
-alias p='./push.sh'
+alias pr='./push.sh rtems'
+alias pt='./push.sh systempulse'
 
 #. $HOME/.ssh/ssh-login
 
 function gc() { git commit -a -m $1 ;}
-
+function pl() { sed -n 'p $1' -print ;} 
 
 alias emacs='emacs -nw'
 alias pw='emacs /rgsoft.dyndns.org:/data/docs/pwd.txt'
@@ -28,8 +29,6 @@ if [[ $(uname) == 'Darwin' ]]; then
     export EC2_PRIVATE_KEY=`ls $EC2_HOME/pk*.pem`
     export EC2_CERT=`ls $EC2_HOME/cert-*.pem`
 fi 
-
-
 
 export EDITOR=emacs
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH

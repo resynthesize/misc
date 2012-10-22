@@ -266,7 +266,7 @@
 ;;(require 'linum) 
 ;; show line numbers
 (setq linum-format "%d| ")
-;;(global-linum-mode 1)
+(global-linum-mode 1)
 
 (setq tidyall-cmd "/usr/bin/tidyall")
 
@@ -301,3 +301,47 @@
                     (message nil)
                     (split-window-vertically)
                     (set-window-buffer (next-window) tidyall-buffer))))))))
+
+(defun named-shell (name)
+  "Open up a shell buffer with the requested name (delimited by '*'). If blank string given, defaults to *shell*."
+  (interactive
+   (let ((string (read-string "Shell buffer name: " nil)))
+     (list string)))
+  (if (string= name "")
+      (setq name "*shell*")
+    (setq name (concat "*" name "*")))
+  (let ((original-shell-buffer (get-buffer "*shell*")))
+    (cond (original-shell-buffer
+           (rename-other-buffer original-shell-buffer "*temp*" t)))
+    (let ((new-shell-buffer (shell)))
+      (cond ((and (string= name "*shell*") original-shell-buffer)
+             (rename-other-buffer new-shell-buffer "*temp*" t)
+             (rename-other-buffer original-shell-buffer "*shell*")
+             (rename-other-buffer new-shell-buffer "*shell*" t))
+            (t
+             (if (not (string= name "*shell*"))
+                 (rename-other-buffer new-shell-buffer name t))
+             (if original-shell-buffer
+                 (rename-other-buffer original-shell-buffer "*shell*"))))
+      new-shell-buffer)))
+
+(fset 'clear-shell-buffer
+      "\C-[ \C-w\C-m\C-p\C-k\C-e")
+
+(fset 'clear-shell-buffer-and-repeat-command
+      "\C-[ \C-w\C-m\C-p\C-k\C-e\C-[Pcu\C-m")
+
+(global-set-key "\M-s"       'named-shell)
+
+(add-hook 'dired-mode-hook
+          '(lambda ()
+             (local-unset-key "\M-s")
+             ))
+
+(setq comint-mode-hook
+      '(lambda ()
+         (local-set-key "\M-c" 'clear-shell-buffer)
+         (local-set-key "\M-r" 'clear-shell-buffer-and-repeat-command)
+         (local-unset-key "\M-s")
+         (set-variable 'scroll-conservatively 0)
+         ))
