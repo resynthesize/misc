@@ -15,7 +15,6 @@ alias p='./push.sh'
 
 function gc() { git commit -a -m $1 ;}
 
-
 alias emacs='emacs -nw'
 alias pw='emacs /rgsoft.dyndns.org:/data/docs/pwd.txt'
 alias sc='emacs ~/.ssh/config' 
@@ -28,7 +27,6 @@ if [[ $(uname) == 'Darwin' ]]; then
     export EC2_PRIVATE_KEY=`ls $EC2_HOME/pk*.pem`
     export EC2_CERT=`ls $EC2_HOME/cert-*.pem`
 fi 
-
 
 
 export EDITOR=emacs

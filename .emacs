@@ -12,16 +12,21 @@
 (global-set-key [?\C-h] 'delete-backward-char)
 (global-set-key [enter] 'newline-and-indent)
 
-;; put function keys to good use!
 (global-set-key [f1] 'help-command)
-(global-set-key [f2] 'previous-multiframe-window)
-(global-set-key [f3] 'next-multiframe-window)
+
 (global-set-key [f4] 'font-lock-mode)
 (global-set-key [f5] 'goto-line)
 (global-set-key [f7] 'previous-error)
 (global-set-key [f8] 'next-error)
 (global-set-key [(shift f9)] 'dos2unix)
 (global-set-key [f9] 'compile)
+
+;; window splitting/switching
+(global-set-key [f15] 'next-user-buffer)
+(global-set-key [f16] 'split-window-vertically)
+(global-set-key [f17] 'delete-window)
+(global-set-key [f18] 'delete-other-windows)
+
 ;; Open .emacs in buffer
 (global-set-key [(shift f10)] 'open-dot-emacs)
 
@@ -37,9 +42,15 @@
 (global-set-key "\C-h" 'perltidy-dwim)
 (global-set-key "\C-l" 'global-linum-mode)
 
+
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+
+;; key bindings
+(when (eq system-type 'darwin) ;; mac specific settings
+  (setq mac-command-modifier 'meta)
+  )
 
 (define-key global-map '[(alt right)] 'my-next-buffer)
 (define-key global-map '[(alt left)] 'my-previous-buffer)
@@ -262,6 +273,24 @@
 ;; show line numbers
 (setq linum-format "%d| ")
 ;;(global-linum-mode 1)
+
+(defun next-user-buffer ()
+  "Switch to the next user buffer.
+User buffers are those whose name does not start with *."
+  (interactive)
+  (next-buffer)
+  (let ((i 0))
+    (while (and (string-match "^*" (buffer-name)) (< i 50))
+      (setq i (1+ i)) (next-buffer) )))
+
+(defun previous-user-buffer ()
+  "Switch to the previous user buffer.
+User buffers are those whose name does not start with *."
+  (interactive)
+  (previous-buffer)
+  (let ((i 0))
+    (while (and (string-match "^*" (buffer-name)) (< i 50))
+      (setq i (1+ i)) (previous-buffer) )))
 
 (setq tidyall-cmd "/usr/bin/tidyall")
 
