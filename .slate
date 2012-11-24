@@ -1,0 +1,15 @@
+config defaultToCurrentScreen true
+# Shows app icons and background apps, spreads icons in the same place.
+config windowHintsWidth 50
+config windowHintsHeight 50
+config windowHintsShowIcons true
+config windowHintsIgnoreHiddenWindows false
+config windowHintsSpread true
+config windowHintsSpreadSearchWidth 50
+config windowHintsSpreadSearchHeight 50
+config windowHintsSpreadPadding 100
+config windowHintsFontColor 0;0;0;1.0´
+
+
+
+bind e:cmd hint ASDFGHJKL; # use whatever keys you wantf
