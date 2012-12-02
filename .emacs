@@ -34,6 +34,7 @@
 
 (global-set-key "\C-x\C-k" 'kill-region)
 (global-set-key "\C-c\C-k" 'kill-region) 
+(global-set-key "\C-f" 'tidyall-buffer)
 (global-set-key "\C-h" 'perltidy-dwim)
 (global-set-key "\C-l" 'global-linum-mode)
 
@@ -261,7 +262,7 @@
   ;; Your init file should contain only one such instance.
  )
 
-
+(ido-mode 1)
 (require 'perltidy)
 ;;(require 'linum) 
 ;; show line numbers
