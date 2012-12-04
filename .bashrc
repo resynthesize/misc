@@ -15,7 +15,6 @@ function gc() { git commit -a -m $1 ;}
 function pl() { sed -n 'p $1' -print $2;} 
 
 alias emacs='emacs -nw'
-alias pw='emacs /rgsoft.dyndns.org:/data/docs/pwd.txt'
 alias sc='emacs ~/.ssh/config' 
 
 if [[ $(uname) == 'Darwin' ]]; then 
