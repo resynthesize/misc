@@ -41,8 +41,9 @@
 (global-set-key "\C-c\C-k" 'kill-region) 
 (global-set-key "\C-f" 'tidyall-buffer)
 (global-set-key "\C-h" 'perltidy-dwim)
+(global-set-key "\C-d" 'dired)
+(global-set-key "\C-j" 'query-replace)
 (global-set-key "\C-l" 'global-linum-mode)
-
 
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
@@ -106,7 +107,8 @@
 ;;(hscroll-global-mode t)
 
 (require 'color-theme)
-(color-theme-tty-dark)
+(require 'color-theme-solarized)
+(load-theme 'solarized-dark t)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Programming stuff
@@ -169,6 +171,11 @@
       cperl-indent-parens-as-block t
       cperl-tab-always-indent t
       cperl-close-paren-offset -4)
+
+(custom-set-faces
+      '(cperl-array-face ((t (:weight normal))))
+      '(cperl-hash-face ((t (:weight normal))))
+)
 
 (custom-set-variables
   ;; custom-set-variables was added by Custom -- don't edit or cut/paste it!
@@ -272,7 +279,7 @@
 (require 'perltidy)
 ;;(require 'linum) 
 ;; show line numbers
-(setq linum-format "%d| ")
+(setq linum-format "%d ")
 (global-linum-mode 1)
 
 (defun next-user-buffer ()
@@ -364,9 +371,9 @@ User buffers are those whose name does not start with *."
              ))
 
 (setq comint-mode-hook
-      '(lambda ()
-         (local-set-key "\M-c" 'clear-shell-buffer)
-         (local-set-key "\M-r" 'clear-shell-buffer-and-repeat-command)
-         (local-unset-key "\M-s")
-         (set-variable 'scroll-conservatively 0)
-         ))
+     '(lambda ()
+        (local-set-key "\M-c" 'clear-shell-buffer)
+        (local-set-key "\M-r" 'clear-shell-buffer-and-repeat-command)
+        (local-unset-key "\M-s")
+        (set-variable 'scroll-conservatively 0)
+        ))

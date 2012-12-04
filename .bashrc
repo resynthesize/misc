@@ -3,19 +3,16 @@ if [ -f /etc/bashrc ]; then
         . /etc/bashrc
 fi
 
-alias itmlogin='tacmd login -s localhost -t 1440 -u sysadmin -p ""'
-alias logs='cd /opt/IBM/ITM/logs'
-alias config='cd /opt/IBM/ITM/config'
-alias ewas='cd /opt/IBM/ITM/li6263/iw/profiles/ITMProfile/logs/ITMServer'
-alias z0='cd /opt/IBM/ITM/li6263/z0/bin'
-alias zk='cd /opt/IBM/ITM/li6263/zk/bin'
-alias pr='./push.sh rtems'
-alias pt='./push.sh systempulse'
+if [ -f ~/.bash_local ]; then
+        . ~/.bash_local
+fi
 
-#. $HOME/.ssh/ssh-login
+if [ -f ~/.ssh/ssh-login ]; then
+        . ~/.ssh/ssh-login
+fi
 
 function gc() { git commit -a -m $1 ;}
-function pl() { sed -n 'p $1' -print ;} 
+function pl() { sed -n 'p $1' -print $2;} 
 
 alias emacs='emacs -nw'
 alias pw='emacs /rgsoft.dyndns.org:/data/docs/pwd.txt'
@@ -32,4 +29,6 @@ fi
 
 export EDITOR=emacs
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
- 
+
+# set this so emacs color-theme-solarized displays correctly
+export TERM=xterm-16color 
