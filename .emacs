@@ -1,7 +1,7 @@
  ;; basic stuff before we get started
 (add-to-list 'load-path "~/lisp")
 
-;; shortcut keys
+;; Shortcut keys
 ;;
 ;; fix delete and backspace to work properly
 (global-set-key [delete] 'delete-char)
@@ -56,6 +56,16 @@
 
 (define-key global-map '[(alt right)] 'my-next-buffer)
 (define-key global-map '[(alt left)] 'my-previous-buffer)
+
+(package-initialize)
+;; check if the packages is installed; if not, install it.
+(mapc
+ (lambda (package)
+   (or (package-installed-p package)
+       (if (y-or-n-p (format "Package %s is missing. Install it? " package)) 
+           (package-install package))))
+ '(js2-mode))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Settings
@@ -127,7 +137,7 @@
 
 ;; turn on minibuffer history saving across sessions
 (require 'savehist-20+)
-(require 'json-mode)
+;; (require 'json-mode)
 (savehist-mode 1)
 
 (set-terminal-coding-system 'utf-8)
