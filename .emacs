@@ -1,4 +1,4 @@
- ;; basic stuff before we get started
+;; basic stuff before we get started
 (add-to-list 'load-path "~/lisp")
 
 ;; Shortcut keys
@@ -39,6 +39,8 @@
 (global-set-key "\C-d" 'dired)
 (global-set-key "\C-j" 'query-replace)
 (global-set-key "\C-l" 'global-linum-mode)
+(global-set-key "\C-i" 'indent-region)
+
 
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
@@ -50,9 +52,9 @@
   )
 
 (global-set-key "\C-p"
-(lambda()
-  (interactive)
-  (start-process-shell-command  "grunt" "*grunt*" "/usr/bin/grunt dev --config ~/cyclops/grunt.js")))
+                (lambda()
+                  (interactive)
+                  (start-process-shell-command  "grunt" "*grunt*" "/usr/bin/grunt dev --config ~/cyclops/grunt.js")))
 
 (define-key global-map '[(alt right)] 'my-next-buffer)
 (define-key global-map '[(alt left)] 'my-previous-buffer)
@@ -74,15 +76,15 @@
 (setq-default
  frame-title-format
  (list '((buffer-file-name "Emacs:  %f" (dired-directory
-                                  dired-directory
-                                  (revert-buffer-function " %b"
-                                  ("%b - Dir:  " default-directory)))))))
+                                         dired-directory
+                                         (revert-buffer-function " %b"
+                                                                 ("%b - Dir:  " default-directory)))))))
 (setq-default
  icon-title-format
  (list '((buffer-file-name " %f" (dired-directory
                                   dired-directory
                                   (revert-buffer-function " %b"
-                                  ("%b - Dir:  " default-directory)))))))
+                                                          ("%b - Dir:  " default-directory)))))))
 
 ;; don't add newlines at end of file
 (setq next-line-add-newlines nil)
@@ -105,7 +107,7 @@
 
 (require 'tramp)
 (setq tramp-default-method "scp")
-
+(require 'nginx-mode) 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Font/Display Stuff
@@ -125,7 +127,7 @@
     (while the-plist
       (add-to-list 'alist (get-tuple-from-plist the-plist))
       (setq the-plist (cddr the-plist)))
-  alist))
+    alist))
 
 (require 'color-theme)
 (require 'color-theme-solarized)
@@ -149,7 +151,7 @@
   (setq tab-width 4
         indent-tabs-mode nil)  ;; don't use tabs when indenting
   )
-  
+
 (add-hook 'c-mode-common-hook 'my-c-mode-hook)
 
 (autoload 'php-mode "php-mode" "PHP editing mode" t)
@@ -168,31 +170,31 @@
 
 (setq auto-mode-alist
       (append '(("\\.C$"    . c++-mode)
-        ("\\.cc$"    . c++-mode)
-        ("\\.cpp$"   . c++-mode)
-        ("\\.cxx$"   . c++-mode)
-        ("\\.hxx$"   . c++-mode)
-        ("\\.h$"     . c++-mode)
-        ("\\.hh$"    . c++-mode)
-        ("\\.idl$"   . c++-mode)
-        ("\\.ipp$"   . c++-mode)
-        ("\\.c$"     . c-mode)
-        ("\\.html$"  . html-mode)
-        ("\\.tpl$"   . html-mode) ;; smarty template files
-        ("\\.thtml$" . html-mode) ;; PHPLib template files
-        ("\\.php$"   . drupal-mode) 
-        ("\\.module$" . drupal-mode) 
-        ("\\.inc$"   . drupal-mode)
-        ("\\.js$"    . js2-mode) 
-        ("\\.pl$"    . perl-mode)
-        ("\\.pm$"    . perl-mode)
-        ("\\.PM$"    . perl-mode)
-        ("\\.pmu$"    . perl-mode)
-        ("\\.java$"  . java-mode)
-        ("\\.txt$"   . text-mode)
-        ("\\.json$"   . json-mode))
+                ("\\.cc$"    . c++-mode)
+                ("\\.cpp$"   . c++-mode)
+                ("\\.cxx$"   . c++-mode)
+                ("\\.hxx$"   . c++-mode)
+                ("\\.h$"     . c++-mode)
+                ("\\.hh$"    . c++-mode)
+                ("\\.idl$"   . c++-mode)
+                ("\\.ipp$"   . c++-mode)
+                ("\\.c$"     . c-mode)
+                ("\\.html$"  . html-mode)
+                ("\\.tpl$"   . html-mode) ;; smarty template files
+                ("\\.thtml$" . html-mode) ;; PHPLib template files
+                ("\\.php$"   . drupal-mode) 
+                ("\\.module$" . drupal-mode) 
+                ("\\.inc$"   . drupal-mode)
+                ("\\.js$"    . js2-mode) 
+                ("\\.pl$"    . perl-mode)
+                ("\\.pm$"    . perl-mode)
+                ("\\.PM$"    . perl-mode)
+                ("\\.pmu$"    . perl-mode)
+                ("\\.java$"  . java-mode)
+                ("\\.txt$"   . text-mode)
+                ("\\.json$"   . json-mode))
 
-          auto-mode-alist))
+              auto-mode-alist))
 ;;       cperl-indent-level 4
 ;; use cperl mode instead of perl 
 (defalias 'perl-mode 'cperl-mode)
@@ -203,13 +205,13 @@
       cperl-close-paren-offset -4)
 
 (custom-set-faces
-      '(cperl-array-face ((t (:weight normal))))
-      '(cperl-hash-face ((t (:weight normal))))
-)
+ '(cperl-array-face ((t (:weight normal))))
+ '(cperl-hash-face ((t (:weight normal))))
+ )
 
 (custom-set-variables
-  ;; custom-set-variables was added by Custom -- don't edit or cut/paste it!
-  ;; Your init file should contain only one such instance.
+ ;; custom-set-variables was added by Custom -- don't edit or cut/paste it!
+ ;; Your init file should contain only one such instance.
  '(display-time-mode t nil (time))
  '(hl-line-face (quote highlight))
  '(save-place t nil (saveplace))
@@ -236,7 +238,7 @@
 ;; custom variables set within emacs
 ;; =====================================================================
 
- '(global-visual-line-mode nil)
+'(global-visual-line-mode nil)
 
 ;; ==========================================================================================
 ;; functions
@@ -283,8 +285,8 @@
 (recentf-mode 1)
 (require 'csv-mode)
 (custom-set-faces
-  ;; custom-set-faces was added by Custom -- don't edit or cut/paste it!
-  ;; Your init file should contain only one such instance.
+ ;; custom-set-faces was added by Custom -- don't edit or cut/paste it!
+ ;; Your init file should contain only one such instance.
  )
 
 (ido-mode 1)
@@ -383,25 +385,25 @@ User buffers are those whose name does not start with *."
              ))
 
 (setq comint-mode-hook
-     '(lambda ()
-        (local-set-key "\M-c" 'clear-shell-buffer)
-        (local-set-key "\M-r" 'clear-shell-buffer-and-repeat-command)
-        (local-unset-key "\M-s")
-        (set-variable 'scroll-conservatively 0)
-        ))
+      '(lambda ()
+         (local-set-key "\M-c" 'clear-shell-buffer)
+         (local-set-key "\M-r" 'clear-shell-buffer-and-repeat-command)
+         (local-unset-key "\M-s")
+         (set-variable 'scroll-conservatively 0)
+         ))
 
-   (defun toggle-night-color-theme ()
-      "Switch to/from night color scheme."
-      (interactive)
-      (require 'color-theme)
-      (if (eq (frame-parameter (next-frame) 'background-mode) 'dark)
-          (color-theme-solarized-light) ; restore default (light) colors
-        ;; create the snapshot if necessary
-        (when (not (commandp 'color-theme-snapshot))
-          (fset 'color-theme-snapshot (color-theme-make-snapshot)))
-        (color-theme-solarized-dark)))
-    
-    (global-set-key (kbd "C-c d") 'toggle-night-color-theme)
+(defun toggle-night-color-theme ()
+  "Switch to/from night color scheme."
+  (interactive)
+  (require 'color-theme)
+  (if (eq (frame-parameter (next-frame) 'background-mode) 'dark)
+      (color-theme-solarized-light) ; restore default (light) colors
+    ;; create the snapshot if necessary
+    (when (not (commandp 'color-theme-snapshot))
+      (fset 'color-theme-snapshot (color-theme-make-snapshot)))
+    (color-theme-solarized-dark)))
+
+(global-set-key (kbd "C-c d") 'toggle-night-color-theme)
 
 (put 'downcase-region 'disabled nil)
 
